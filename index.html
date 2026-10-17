@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f4">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Medienrückgabe">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/app.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/app-192.png">
+    <title>Medienrückgabe – Kalenderdateien erstellen</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <p class="eyebrow">Bibliothek · Kalender</p>
+        <h1>Medienrückgabe planen</h1>
+        <p class="intro">Füge deinen Ausleihtext ein. Die Rückgabetermine werden direkt in deinem Browser erkannt und als Kalenderdateien bereitgestellt.</p>
+      </header>
+
+      <section class="panel input-panel" aria-labelledby="input-heading">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">Schritt 1</p>
+            <h2 id="input-heading">Ausleihtext einfügen</h2>
+          </div>
+          <span class="privacy-label"><span aria-hidden="true">●</span> Bleibt auf deinem Gerät</span>
+        </div>
+        <label for="source-text">Text aus deinem Bibliothekskonto</label>
+        <textarea id="source-text" rows="11" placeholder="Kopiere hier den Text mit den Medien, Rückgabedaten und Standorten hinein …"></textarea>
+        <div class="form-footer">
+          <p class="help-text">Datumsangaben nach „Stand“ werden ignoriert. Erkannt werden Einträge mit „Markieren“ und Rückgabedatum.</p>
+          <button id="analyze-button" class="button button-primary" type="button">Termine erkennen</button>
+        </div>
+        <p id="input-message" class="message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="results-section" class="panel results-panel" aria-labelledby="results-heading" hidden>
+        <div class="section-heading results-heading">
+          <div>
+            <p class="step-label">Schritt 2</p>
+            <h2 id="results-heading">Rückgaben prüfen</h2>
+          </div>
+          <span id="media-count" class="count-label"></span>
+        </div>
+        <p class="help-text">Gruppen werden nach Rückgabedatum und Bibliotheksstandort gebildet. Jede Gruppe wird eine eigene Kalenderdatei.</p>
+
+        <div class="template-control">
+          <label for="title-template">Titelvorlage</label>
+          <input id="title-template" type="text" value="Medienrückgabe {location} ({count})">
+          <p class="help-text">Verfügbare Platzhalter: <code>{location}</code> für den Standort und <code>{count}</code> für die Medienanzahl.</p>
+        </div>
+
+        <fieldset class="reminder-control">
+          <legend>Erinnerungen</legend>
+          <p class="help-text">Wähle aus, wann du vor der Rückgabe erinnert werden möchtest. Zeiten sind in deutscher Ortszeit und können angepasst werden.</p>
+          <div class="reminder-row">
+            <label class="reminder-option" for="reminder-two-days">
+              <input id="reminder-two-days" type="checkbox" name="reminders" value="two-days-1700" checked>
+              2 Tage vorher
+            </label>
+            <input class="reminder-time" type="time" value="17:00" data-reminder-for="two-days-1700" aria-label="Uhrzeit für die Erinnerung 2 Tage vorher">
+          </div>
+          <div class="reminder-row">
+            <label class="reminder-option" for="reminder-one-day">
+              <input id="reminder-one-day" type="checkbox" name="reminders" value="one-day-1700" checked>
+              1 Tag vorher
+            </label>
+            <input class="reminder-time" type="time" value="17:00" data-reminder-for="one-day-1700" aria-label="Uhrzeit für die Erinnerung 1 Tag vorher">
+          </div>
+          <div class="reminder-row">
+            <label class="reminder-option" for="reminder-same-day">
+              <input id="reminder-same-day" type="checkbox" name="reminders" value="same-day-0700" checked>
+              Am Rückgabetag
+            </label>
+            <input class="reminder-time" type="time" value="07:00" data-reminder-for="same-day-0700" aria-label="Uhrzeit für die Erinnerung am Rückgabetag">
+          </div>
+        </fieldset>
+
+        <div class="selection-bar">
+          <label class="select-all-label">
+            <input id="select-all" type="checkbox">
+            Alle Gruppen auswählen
+          </label>
+          <span id="selection-count" class="selection-count"></span>
+        </div>
+        <div id="groups-list" class="groups-list"></div>
+        <div class="export-footer">
+          <p id="export-message" class="message" role="status" aria-live="polite"></p>
+          <button id="download-selected" class="button button-primary" type="button">Ausgewählte .ics-Dateien herunterladen</button>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <p>Kalendertermine sind ganztägig. Erinnerungszeiten und Bibliotheksstandort werden in den Kalenderdateien hinterlegt.</p>
+      </footer>
+    </main>
+  </body>
+</html>
