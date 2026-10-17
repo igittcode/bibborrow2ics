@@ -8,11 +8,6 @@ const publicFiles = [
   "index.html",
   "app.js",
   "styles.css",
-  "manifest.webmanifest",
-  "sw.js",
-  "icons/app.svg",
-  "icons/app-192.png",
-  "icons/app-512.png",
 ];
 
 export async function buildSite(outputDirectory = defaultOutputDirectory) {
