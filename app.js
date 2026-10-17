@@ -397,4 +397,14 @@ function initializeApp() {
   });
 }
 
-if (typeof document !== "undefined") initializeApp();
+if (typeof document !== "undefined") {
+  initializeApp();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register(new URL("./sw.js", import.meta.url))
+        .catch((error) => console.error("Service worker registration failed.", error));
+    }, { once: true });
+  }
+}
